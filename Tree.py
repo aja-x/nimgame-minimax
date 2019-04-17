@@ -24,14 +24,13 @@ class Tree:
                     pass  # mentok, lanjut besok
 
     def count_child(self, node):
-        deduction = 1
         value = []
         for i in node.node_value[1]:
+            deduction = 1
             while i > deduction:
                 value.append(i - 1)
                 deduction += 1
                 i -= 1
-            deduction = 1
         value.sort(reverse=True)
         return value
 
