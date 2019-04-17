@@ -21,17 +21,17 @@ class Tree:
         while self.check_state:
             for i in findall(self.tree[0], filter_=lambda n: n.depth == 1):
                 for j in self.count_child(i):
-                    pass
+                    pass  # mentok, lanjut besok
 
     def count_child(self, node):
         deduction = 1
         value = []
         for i in node.node_value[1]:
             while i > deduction:
-                value.append(i-deduction)
+                value.append(i - 1)
                 deduction += 1
                 i -= 1
-            value.append(1)
+            deduction = 1
         value.sort(reverse=True)
         return value
 
