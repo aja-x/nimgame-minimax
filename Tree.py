@@ -10,6 +10,7 @@ class Tree(object):
         # is_final buat menandai node itu terakhir, udah gak bisa dipecah lagi, lawan milih node final, auto kalah
         # evaluator_value buat memberi nilai evaluator tiap node
         # node root / utama ada di self.tree[0]
+        # doc: https://anytree.readthedocs.io/en/2.6.0/
         self.tree = [Node(0, node_value=[self.root_value], is_final=False, evaluator_value=None)]
         self.render_tree()
 
@@ -29,6 +30,8 @@ class Tree(object):
                                               node_value=j[0], is_final=j[1], evaluator_value=None))
                 else:
                     count_final += 1
+
+                # cek apakah semua node sudah final, jika sudah keluar dari while loop
                 if count_final == self.count_siblings(current_state):
                     check_state = False
             current_state += 1
@@ -44,6 +47,7 @@ class Tree(object):
             j = 0
             temp = k
             while temp - 1 >= j + 1:
+                # tambah ke list. Ex: [[6, 2, 1], False]
                 value.append([self.set_child_value(node.node_value, k, j + 1), True if temp - 1 == j + 1 else False])
                 temp -= 1
                 j += 1
@@ -82,6 +86,8 @@ class Tree(object):
     # melihat tampilan tree
     # doc: https://anytree.readthedocs.io/en/latest/api/anytree.render.html
     def get_tree(self):
+        # disini tak buat 2 macam return, yang di atas simple, yang di bawah detail
+
         # return RenderTree(self.tree[0]).by_attr(lambda n: "-".join(map(str, n.node_value)))
         return RenderTree(self.tree[0])
 
