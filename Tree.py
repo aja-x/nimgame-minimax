@@ -85,7 +85,7 @@ class Tree(object):
         # return RenderTree(self.tree[0]).by_attr(lambda n: "-".join(map(str, n.node_value)))
         return RenderTree(self.tree[0])
 
-    # melihat tinggian tree
+    # melihat ketinggian tree
     # doc: https://anytree.readthedocs.io/en/2.6.0/api/anytree.node.html
     def get_tree_height(self):
         return self.tree[0].height
