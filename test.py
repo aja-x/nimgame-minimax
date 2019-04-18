@@ -19,7 +19,10 @@ def count_child(node):
         j = 0
         temp = k
         while temp - 1 >= j + 1:
-            value.append(set_child(node.node_value[0], k, j + 1))
+            if temp - 1 == j + 1:
+                value.append([set_child(node.node_value[0], k, j + 1), True])
+            else:
+                value.append([set_child(node.node_value[0], k, j + 1), False])
             temp -= 1
             j += 1
     print(value)
