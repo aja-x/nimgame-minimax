@@ -2,31 +2,37 @@ from anytree import Node, RenderTree, findall
 
 
 class Tree:
-    def __init__(self, root_value, player_turn):
+    def __init__(self, root_value, first_player):
         self.root_value = root_value
-        self.player_turn = player_turn  # player_turn: True = Human, False = Computer
-        self.current_state = 0
-        self.check_state = True
-        if self.player_turn:
-            self.tree = [Node(self.current_state, node_value=[self.root_value], is_final=False, state_value=None)]
-        else:
-            self.tree = [Node(self.current_state, node_value=[self.root_value], is_final=False, state_value=None)]
+        self.first_player = first_player  # first_player: True = Human, False = Computer
+        self.tree = [Node(0, node_value=[self.root_value], is_final=False, evaluator_value=None)]
         self.render_tree()
 
     def render_tree(self):
-        while self.check_state:
+        current_state = 0
+        check_state = True
+        while check_state:
             count_final = 0
-            for i in findall(self.tree[0], filter_=lambda n: n.depth == self.current_state):
+            for i in findall(self.tree[0], filter_=lambda n: n.depth == current_state):
                 if not i.is_final:
                     for j in self.count_child(i):
                         self.tree.append(Node(len(self.tree), parent=self.tree[i.name],
-                                              node_value=j[0], is_final=j[1], state_value=None))
+                                              node_value=j[0], is_final=j[1], evaluator_value=None))
                 else:
                     count_final += 1
-                if count_final == self.count_siblings():
-                    self.check_state = False
+                if count_final == self.count_siblings(current_state):
+                    check_state = False
+            current_state += 1
+        self.set_evaluator_value()
 
-            self.current_state += 1
+    def set_evaluator_value(self):
+        current_state = self.get_tree_height()
+        current_player = self.first_player
+        while current_state >= 0:
+            for i in findall(self.tree[0], filter_=lambda n: n.depth == current_state):
+                i.evaluator_value = 1 if current_player else -1
+            current_player = not current_player
+            current_state -= 1
 
     def count_child(self, node):
         value = []
@@ -50,17 +56,20 @@ class Tree:
         value.sort(reverse=True)
         return value
 
-    def count_siblings(self):
-        return len(findall(self.tree[0], filter_=lambda n: n.depth == self.current_state))
+    def count_siblings(self, current_state):
+        return len(findall(self.tree[0], filter_=lambda n: n.depth == current_state))
 
     def get_tree(self):
-        return RenderTree(self.tree[0]).by_attr(lambda n: "-".join(map(str, n.node_value)))
-        # return RenderTree(self.tree[0])
+        # return RenderTree(self.tree[0]).by_attr(lambda n: "-".join(map(str, n.node_value)))
+        return RenderTree(self.tree[0])
 
     def get_tree_height(self):
         return self.tree[0].height
 
 
-tree = Tree(5, True)
+# Contoh implementasi, ini ada di luar class
+number_of_sticks = 5
+is_play_first = True  # Play first, True: Human, False: Computer
+tree = Tree(number_of_sticks, is_play_first)
 print(tree.get_tree())
 print(tree.get_tree_height())
