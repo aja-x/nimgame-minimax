@@ -1,6 +1,6 @@
 ## Nim Game (Mod) with Minimax Algorithm
 
-Run ```Game.py``` to start the game
+Run ```python Game.py``` or ```python3 Game.py``` to start the game
 
 All comments in project files written in Bahasa Indonesia
 
