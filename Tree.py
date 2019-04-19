@@ -5,6 +5,7 @@ class Tree(object):
     def __init__(self, root_value, first_player):
         self.root_value = root_value
         self.first_player = first_player  # first_player: True = Human, False = Computer
+
         # Tree disimpan dalam list bertipe Node,
         # Tiap list punya 2 property:
         # is_final buat menandai node itu terakhir, udah gak bisa dipecah lagi, lawan milih node final, auto kalah
@@ -20,6 +21,7 @@ class Tree(object):
         check_state = True
         while check_state:
             count_final = 0
+
             # looping node di state yang sama
             # findall doc: https://anytree.readthedocs.io/en/2.6.0/api/anytree.search.html
             for i in findall(self.tree[0], filter_=lambda n: n.depth == current_state):
@@ -74,7 +76,7 @@ class Tree(object):
         while current_state >= 0:
             # looping node di state yang sama
             for i in findall(self.tree[0], filter_=lambda n: n.depth == current_state):
-                i.evaluator_value = 1 if current_player else -1
+                i.evaluator_value = 1 if (current_player and not i.is_final) else -1
             current_player = not current_player
             current_state -= 1
 
@@ -86,7 +88,7 @@ class Tree(object):
     # melihat tampilan tree
     # doc: https://anytree.readthedocs.io/en/latest/api/anytree.render.html
     def get_tree(self):
-        # disini tak buat 2 macam return, yang di atas simple, yang di bawah detail
+        # disini tak buat 2 macam return, yang di atas simple, yang di bawah detail, tinggal comment uncomment
 
         # return RenderTree(self.tree[0]).by_attr(lambda n: "-".join(map(str, n.node_value)))
         return RenderTree(self.tree[0])
@@ -98,8 +100,8 @@ class Tree(object):
 
 
 # Contoh implementasi, ini ada di luar class
-number_of_sticks = 9
-is_play_first = True  # Play first, True: Human, False: Computer
-tree = Tree(number_of_sticks, is_play_first)
-print(tree.get_tree())
-print(tree.get_tree_height())
+# number_of_sticks = 9
+# is_play_first = True  # Play first, True: Human, False: Computer
+# tree = Tree(number_of_sticks, is_play_first)
+# print(tree.get_tree())
+# print(tree.get_tree_height())
