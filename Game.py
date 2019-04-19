@@ -25,8 +25,11 @@ class Game:
     def available_moving_point(self, current_node):
         print("\n-->" + ("Your" if self.current_player else "Computer") + " Turn\nAvailable moving point:")
         count_child = 0
+        temp = ""
         for i in current_node.children:
-            print(str(count_child + 1) + ". [" + ("-".join(map(str, i.node_value)))+"]")
+            if temp != ("-".join(map(str, i.node_value))):
+                print(str(count_child + 1) + ". [" + ("-".join(map(str, i.node_value)))+"]")
+            temp = ("-".join(map(str, i.node_value)))
             count_child += 1
 
     def get_comp_moving_choice(self, current_node):
