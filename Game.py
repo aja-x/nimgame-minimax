@@ -1,4 +1,4 @@
-from Tree import Tree
+from Tree2 import Tree2
 
 
 class Game:
@@ -65,7 +65,7 @@ class Game:
                                        "Choose your turn: "))
         self.is_play_first = True if self.is_play_first == 1 else False
         print("\nCreating tree....")
-        self.tree = Tree(self.number_of_sticks, self.is_play_first)
+        self.tree = Tree2(self.number_of_sticks, self.is_play_first)
         print("Tree created.\n")
         is_show_tree = input("View rendered tree [y/n]? ")
         if is_show_tree == "y" or is_show_tree == "Y":
