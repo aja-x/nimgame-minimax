@@ -14,37 +14,41 @@ class Game:
         current_node = self.tree.tree[0]
         while not current_node.is_leaf:
             if self.current_player:
-                self.available_moving_point(current_node)
+                if not self.available_moving_point(current_node):
+                    break
                 current_node = self.get_human_moving_choice(current_node)
             else:
-                self.available_moving_point(current_node)
+                if not self.available_moving_point(current_node):
+                    break
                 current_node = self.get_comp_moving_choice(current_node)
             self.current_player = not self.current_player
-        print("\n" + ("You" if self.current_player else "Computer") + " win!")
+        print("\n" + ("You" if not self.current_player else "Computer") + " win!")
 
     def available_moving_point(self, current_node):
         print("\n-->" + ("Your" if self.current_player else "Computer") + " Turn\nAvailable moving point:")
         count_child = 0
-        for i in current_node.children:
-            print(str(count_child + 1) + ". [" + ("-".join(map(str, i.node_value)))+"]")
+        for child in current_node.children:
+            if child.is_leaf:
+                print("There are no available moving point :(")
+                return False
+            else:
+                print(str(count_child + 1) + ". [" + ("-".join(map(str, child.node_value)))+"]")
             count_child += 1
+        return True
 
     def get_comp_moving_choice(self, current_node):
         choice_child = self.check_comp_moving_choice(current_node)
         current_child = 0
-        for i in current_node.children:
+        for child in current_node.children:
             if current_child == choice_child:
-                print("Computer move: [" + ("-".join(map(str, i.node_value)))+"]")
-                return i
+                print("Computer move: [" + ("-".join(map(str, child.node_value)))+"]")
+                return child
             current_child += 1
-        for i in current_node.children:
-            print("Computer move: [" + ("-".join(map(str, i.node_value)))+"]")
-            return i
 
     def check_comp_moving_choice(self, current_node):
         child_choice = 0
-        for i in current_node.children:
-            if i.evaluator_value == 1:
+        for child in current_node.children:
+            if child.evaluator_value == 1:
                 return child_choice
             child_choice += 1
         return child_choice / child_choice - 1
@@ -53,9 +57,9 @@ class Game:
         count_child = 0
         while True:
             moving_choice = int(input("Choose your move: "))
-            for i in current_node.children:
+            for child in current_node.children:
                 if moving_choice - 1 == count_child:
-                    return i
+                    return child
                 count_child += 1
             print("Invalid move\n\n")
 

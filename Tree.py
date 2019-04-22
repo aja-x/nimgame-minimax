@@ -56,7 +56,7 @@ class Tree(object):
                 current_value += 1
             else:
                 result_list.append(value)
-        result_list.sort(reverse=True)  # Uncomment for sorted list
+        # result_list.sort(reverse=True)  # Uncomment for sorted list
         return result_list
 
     def set_evaluator_value(self):
