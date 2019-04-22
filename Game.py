@@ -13,13 +13,11 @@ class Game:
         self.menu()
         current_node = self.tree.tree[0]
         while not current_node.is_leaf:
+            if not self.available_moving_point(current_node):
+                break
             if self.current_player:
-                if not self.available_moving_point(current_node):
-                    break
                 current_node = self.get_human_moving_choice(current_node)
             else:
-                if not self.available_moving_point(current_node):
-                    break
                 current_node = self.get_comp_moving_choice(current_node)
             self.current_player = not self.current_player
         print("\n" + ("You" if not self.current_player else "Computer") + " win!")
