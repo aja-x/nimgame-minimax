@@ -1,7 +1,7 @@
 from anytree import Node, RenderTree, findall
 
 
-class Tree3(object):
+class Tree(object):
     def __init__(self, root_value, first_player):
         self.root_value = root_value
         self.first_player = first_player  # first_player: True = Human, False = Computer
