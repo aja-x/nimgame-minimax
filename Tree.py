@@ -49,14 +49,15 @@ class Tree(object):
 
     def set_child_value(self, list_, current_value, deduction):
         result_list = []
+        is_already_split = True
         for value in list_:
-            if value == current_value:
+            if value == current_value and is_already_split:
                 result_list.append(current_value - deduction)
                 result_list.append(deduction)
-                current_value += 1
+                is_already_split = False
             else:
                 result_list.append(value)
-        # result_list.sort(reverse=True)  # Uncomment for sorted list
+        result_list.sort(reverse=True)  # Uncomment for sorted list
         return result_list
 
     def set_evaluator_value(self):
@@ -70,7 +71,7 @@ class Tree(object):
     def calculate_evaluator_value(self, node, current_player, current_state):
         if node.is_final and current_state % 2 == 0:
             return -1 if current_player else 1
-        elif node.is_final:
+        elif node.is_final and current_state % 2 != 0:
             return 1 if not current_player else -1
         else:
             value = []
