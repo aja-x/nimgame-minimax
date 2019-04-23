@@ -14,7 +14,7 @@ class Tree(object):
             count_final = 0
             for node in findall(self.tree[0], filter_=lambda n: n.depth == current_state):
                 if not node.is_final:
-                    for list_ in self.count_child(node):
+                    for list_ in self.set_all_child(node):
                         self.tree.append(Node(len(self.tree), parent=self.tree[node.name],
                                               node_value=list_[0], is_final=True if list_[1] == 1 else False,
                                               evaluator_value=None))
@@ -25,20 +25,20 @@ class Tree(object):
             current_state += 1
         self.set_evaluator_value()
 
-    def count_child(self, node):
+    def set_all_child(self, node):
         result_list = []
-        for i in range(len(node.node_value)):
-            if i != 0 and node.node_value[i] == 2:
-                continue
-            deduction, temp_value = 1, node.node_value[i] - 1
-            while temp_value >= deduction:
-                if temp_value == deduction and temp_value != 1:
-                    break
-                result_list.append([self.set_child_value(node.node_value, node.node_value[i], deduction),
-                                    1 if temp_value == deduction else 0])
-                temp_value -= 1
-                deduction += 1
+        if max(node.node_value) == 2:
+            result_list.append([self.set_child_value(node.node_value, 2, 1), 1])
+        else:
+            for value in node.node_value:
+                number_of_children = self.count_children(value)
+                if value > 2:
+                    for i in range(number_of_children):
+                        result_list.append([self.set_child_value(node.node_value, value, i + 1), 0])
         return self.check_duplicate(result_list)
+
+    def count_children(self, current_value):
+        return (int(current_value / 2) - 1) if current_value % 2 == 0 else int(current_value / 2)
 
     def check_duplicate(self, list_):
         result_list = []
@@ -57,7 +57,7 @@ class Tree(object):
                 is_already_split = False
             else:
                 result_list.append(value)
-        result_list.sort(reverse=True)  # Uncomment for sorted list
+        # result_list.sort(reverse=True)  # Uncomment for sorted list
         return result_list
 
     def set_evaluator_value(self):
@@ -86,6 +86,7 @@ class Tree(object):
         return len(findall(self.tree[0], filter_=lambda n: n.depth == current_state))
 
     def get_tree(self):
+        print("Total node: " + str(len(self.tree)), end="\n\n")
         # Choose between 2 type of return, simple or details
         return RenderTree(self.tree[0]).by_attr(lambda n: ("-".join(map(str, n.node_value)) +
                                                            "  [" + str(n.evaluator_value) + "]"))

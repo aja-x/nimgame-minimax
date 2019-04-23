@@ -85,9 +85,9 @@ class Game:
         print("---------------------------------------------------")
         while True:
             self.number_of_sticks = int(input("Insert number of sticks\t: "))
-            if self.number_of_sticks % 2 != 0:
+            if self.number_of_sticks % 2 != 0 and self.number_of_sticks != 1:
                 break
-            print("Must be odd.\n")
+            print("Must be odd and not 1.\n")
         print("---------------------------------------------------\n\n")
 
     def show_turn_choice(self):
@@ -100,7 +100,7 @@ class Game:
 
     def creating_tree(self):
         print("---------------------------------------------------")
-        print("Creating tree....", end=" ")
+        print("Creating tree....")
         self.tree = Tree(self.number_of_sticks, self.is_play_first)
         print("Tree created.")
         self.current_player = self.tree.first_player
